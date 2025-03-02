@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/hero.dart';
 
 class InventoryPage extends StatelessWidget {
-  final HeroModel hero = HeroModel();
-  InventoryPage({super.key});
+  final HeroModel hero;
+  const InventoryPage({super.key, required this.hero});
 
   @override
   Widget build(BuildContext context) {
