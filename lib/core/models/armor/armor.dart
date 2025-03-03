@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:game/core/models/armor/type_armor.dart';
-import 'package:game/core/rarity.dart';
+import 'package:game/core/models/rarity.dart';
 
 class ArmorModel {
   late String name;

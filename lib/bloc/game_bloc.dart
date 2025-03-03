@@ -4,7 +4,7 @@ import 'package:game/bloc/game_events.dart';
 import 'package:game/bloc/game_states.dart';
 import 'package:game/core/models/armor/armor.dart';
 import 'package:game/core/models/hero.dart';
-import 'package:game/database/database_helper.dart';
+import 'package:game/data/database/database_helper.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   GameBloc() : super(GameInitial()) {
@@ -37,16 +37,16 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       List<DateTime> battles = await dbHelper.getHeroBattles(event.heroId);
       DateTime now = DateTime.now();
 
-      // Check if the hero can battle
-      if (battles.length >= 2 && battles.first.isAfter(now.subtract(Duration(days: 1)))) {
-        emit(GameErrorState(message: 'You can only battle twice per day', hero: state.hero));
-        return;
-      }
+      // // Check if the hero can battle
+      // if (battles.length >= 2 && battles.first.isAfter(now.subtract(Duration(days: 1)))) {
+      //   emit(GameErrorState(message: 'You can only battle twice per day', hero: state.hero));
+      //   return;
+      // }
 
-      if (battles.isNotEmpty && battles.first.isAfter(now.subtract(Duration(hours: 3)))) {
-        emit(GameErrorState(message: 'You can only battle once every 3 hours', hero: state.hero));
-        return;
-      }
+      // if (battles.isNotEmpty && battles.first.isAfter(now.subtract(Duration(hours: 3)))) {
+      //   emit(GameErrorState(message: 'You can only battle once every 3 hours', hero: state.hero));
+      //   return;
+      // }
 
       // Get random armor
       ArmorModel armor = ArmorModel.random();
