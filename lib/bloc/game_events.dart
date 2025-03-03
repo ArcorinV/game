@@ -15,3 +15,30 @@ class LoadHeroEvent extends GameEvent {
   @override
   List<Object> get props => [heroId];
 }
+
+class GetRandomArmorEvent extends GameEvent {
+  final int heroId;
+
+  const GetRandomArmorEvent({required this.heroId});
+
+  @override
+  List<Object> get props => [heroId];
+}
+
+class GetRandomExperienceEvent extends GameEvent {
+  final int heroId;
+
+  const GetRandomExperienceEvent({required this.heroId});
+
+  @override
+  List<Object> get props => [heroId];
+}
+
+class BattleEvent extends GameEvent {
+  final int heroId;
+
+  const BattleEvent({required this.heroId});
+
+  @override
+  List<Object> get props => [heroId];
+}
