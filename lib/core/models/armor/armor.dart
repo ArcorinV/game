@@ -36,7 +36,6 @@ class ArmorModel {
       TypeArmorWeight.light => 1,
       TypeArmorWeight.medium => 1.5,
       TypeArmorWeight.heavy => 2,
-      TypeArmorWeight.shield => 1.5
     };
     final typeArmorMultiplier = switch (typeArmor) {
       TypeArmor.helmet => 1,
@@ -61,7 +60,6 @@ class ArmorModel {
       TypeArmorWeight.light => 'Light',
       TypeArmorWeight.medium => 'Medium',
       TypeArmorWeight.heavy => 'Heavy',
-      TypeArmorWeight.shield => ''
     };
     final typeArmorName = switch (typeArmor) {
       TypeArmor.helmet => 'Helmet',

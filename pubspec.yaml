@@ -10,7 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^6.0.0
   flutter_bloc: ^9.1.0
+  another_flushbar: ^1.12.30
 
   # Local database
   sqflite: ^2.0.0+4

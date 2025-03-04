@@ -20,7 +20,7 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'game.db');
     return await openDatabase(
       path,
-      version: 4,
+      version: 5,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -62,6 +62,14 @@ class DatabaseHelper {
         date_battle TEXT
       )
     ''');
+    await db.execute('''
+      CREATE TABLE hero_status(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        hero_id INTEGER,
+        last_login TEXT,
+        health INTEGER
+      )
+    ''');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -94,6 +102,16 @@ class DatabaseHelper {
     if (oldVersion < 4) {
       await db.execute('''
         ALTER TABLE hero ADD COLUMN date_battle TEXT
+      ''');
+    }
+    if (oldVersion < 5) {
+      await db.execute('''
+        CREATE TABLE hero_status(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          hero_id INTEGER,
+          last_login TEXT,
+          health INTEGER
+        )
       ''');
     }
   }
@@ -133,10 +151,10 @@ class DatabaseHelper {
 
   Future<int> insertHeroArmor(int heroId, ArmorModel armor) async {
     Database db = await database;
-    final armorLenght = (await db.query('hero_armor')).length;
+    final armorLength = (await db.query('hero_armor')).length;
     return await db.insert('hero_armor', {
       'hero_id': heroId,
-      'armor_id': armorLenght + 1,
+      'armor_id': armorLength + 1,
       'name': armor.name,
       'date_received': DateTime.now().toIso8601String(),
       'defense': armor.defense,
@@ -189,5 +207,42 @@ class DatabaseHelper {
       orderBy: 'date_battle DESC',
     );
     return maps.map((map) => DateTime.parse(map['date_battle'])).toList();
+  }
+
+  Future<int> insertHeroStatus(int heroId, DateTime lastLogin, int health) async {
+    Database db = await database;
+    return await db.insert('hero_status', {
+      'hero_id': heroId,
+      'last_login': lastLogin.toIso8601String(),
+      'health': health,
+    });
+  }
+
+  Future<int?> getHeroStatus(int heroId) async {
+    Database db = await database;
+    List<Map<String, dynamic>> maps = await db.query(
+      'hero_status',
+      where: 'hero_id = ?',
+      whereArgs: [heroId],
+      orderBy: 'last_login DESC',
+      limit: 1,
+    );
+    if (maps.isNotEmpty) {
+      final oldHP = maps.first;
+      final lastLogit = DateTime.parse(oldHP['last_login']);
+      if (lastLogit.isBefore(DateTime.now().subtract(Duration(days: 1))) && oldHP['health'] < 100) {
+        final hoursCount = DateTime.now().difference(lastLogit).inHours;
+        final restoredHP = hoursCount * 10;
+        final health = oldHP['health'] + restoredHP > 100 ? 100 : oldHP['health'] + restoredHP;
+        await db.update(
+          'hero_status',
+          {'health': health},
+          where: 'hero_id = ?',
+          whereArgs: [heroId],
+        );
+        return health;
+      }
+    }
+    return null;
   }
 }

@@ -6,6 +6,11 @@ class HeroModel {
   int experience;
   List<ArmorModel>? armors;
 
+  /// Battle
+  int health = 100;
+  bool isAlive = true;
+  int defense = 0;
+
   HeroModel({this.id = 1, required this.level, required this.experience, this.armors});
 
   void addExperience(int exp) {
@@ -36,5 +41,10 @@ class HeroModel {
     );
   }
 
-  addArmor(List<ArmorModel> armors) => armors.addAll(armors);
+  addArmor(List<ArmorModel> armors) {
+    if (this.armors == null) {
+      this.armors = [];
+    }
+    this.armors!.addAll(armors);
+  }
 }

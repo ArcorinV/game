@@ -23,6 +23,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       } else {
         final armor = await dbHelper.getArmors(hero.id);
         hero.armors = armor;
+        final health = await dbHelper.getHeroStatus(hero.id);
+        if (health != null) {
+          hero.health = health;
+          hero.isAlive = health > 0;
+        }
       }
       emit(HeroLoadedState(hero: hero));
     } catch (e) {
@@ -51,16 +56,17 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       // Get random armor
       ArmorModel armor = ArmorModel.random();
       await dbHelper.insertHeroArmor(event.heroId, armor);
-      hero.armors = [armor];
+      hero.addArmor([armor]);
 
       final int experienceToNextLevel = hero.level * 100 - hero.experience;
-      final int maxExperience = min(500, experienceToNextLevel - 1);
-      final int randomExperience = 50 + Random().nextInt(maxExperience - 50 + 1);
+      final int maxExperience = min(500, experienceToNextLevel);
+      final int randomExperience = maxExperience > 50 ? 50 + Random().nextInt(maxExperience - 50 + 1) : maxExperience;
 
       hero.experience += randomExperience;
       if (hero.experience >= hero.level * 100) {
         hero.experience -= hero.level * 100;
         hero.level++;
+        emit(NewLevelState(hero: hero));
       }
 
       await dbHelper.updateHero(hero);

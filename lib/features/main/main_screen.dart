@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game/bloc/game_bloc.dart';
@@ -29,18 +30,6 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-  // Future<void> _loadHero() async {
-  //   DatabaseHelper dbHelper = DatabaseHelper();
-  //   HeroModel? hero = await dbHelper.getHero(1);
-  //   if (hero == null) {
-  //     hero = HeroModel(id: 1, level: 1, experience: 0);
-  //     await dbHelper.insertHero(hero);
-  //   }
-  //   setState(() {
-  //     _hero = hero;
-  //   });
-  // }
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -52,7 +41,31 @@ class _MyHomePageState extends State<MyHomePage> {
     return BlocProvider(
       create: (context) => GameBloc()..add(LoadHeroEvent(heroId: 1)),
       child: BlocConsumer<GameBloc, GameState>(
-        listener: (context, state) => {},
+        listener: (context, state) {
+          if (state is NewLevelState) {
+            Flushbar(
+              message: 'Congratulations! You have leveled up!',
+              backgroundColor: Colors.green,
+              margin: EdgeInsets.all(10),
+              borderRadius: BorderRadius.circular(10),
+              duration: Duration(seconds: 3),
+              flushbarPosition: FlushbarPosition.TOP,
+              icon: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+              mainButton: TextButton(
+                onPressed: () {
+                  // Some code to execute.
+                },
+                child: Text(
+                  'Awesome!',
+                  style: TextStyle(color: Colors.yellow),
+                ),
+              ),
+            ).show(context);
+          }
+        },
         builder: (context, state) {
           if (state is GameInitial) {
             return const Center(child: CircularProgressIndicator());
@@ -82,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
                 currentIndex: _selectedIndex,
-                selectedItemColor: Colors.amber[800],
+                selectedItemColor: Colors.blue[700],
                 onTap: _onItemTapped,
               ),
             );

@@ -3,8 +3,7 @@ import 'dart:math';
 enum TypeArmorWeight {
   light,
   medium,
-  heavy,
-  shield;
+  heavy;
 
   static get randomTypeArmor => values[Random().nextInt(values.length)];
 }

@@ -39,3 +39,10 @@ class GameErrorState extends GameState {
   @override
   List<Object> get props => [message];
 }
+
+class NewLevelState extends GameState {
+  const NewLevelState({required HeroModel hero}) : super(hero: hero);
+
+  @override
+  List<Object> get props => [hero!];
+}
