@@ -44,13 +44,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
       // Check if the hero can battle
       if (battles.length >= 2 && battles.first.isAfter(now.subtract(Duration(days: 1)))) {
-        emit(GameInitial());
         emit(GameErrorState(message: 'You can only battle twice per day', hero: state.hero));
         return;
       }
 
       if (battles.isNotEmpty && battles.first.isAfter(now.subtract(Duration(hours: 3)))) {
-        emit(GameInitial());
         emit(GameErrorState(message: 'You can only battle once every 3 hours', hero: state.hero));
         return;
       }
