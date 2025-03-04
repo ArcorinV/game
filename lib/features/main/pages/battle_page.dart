@@ -16,15 +16,30 @@ class BattlePage extends StatelessWidget {
       listener: (context, state) {
         if (state is GameErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.all(10),
+            ),
           );
         } else if (state is BattleCompletedState) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Received armor: ${state.armor}')),
+            SnackBar(
+              content: Text('Received armor: ${state.armor}'),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.all(10),
+            ),
           );
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Received ${state.experience} experience')),
+            SnackBar(
+              content: Text('Received ${state.experience} experience'),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.all(10),
+            ),
           );
         }
       },

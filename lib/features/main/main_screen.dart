@@ -54,15 +54,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 Icons.check,
                 color: Colors.white,
               ),
-              mainButton: TextButton(
-                onPressed: () {
-                  // Some code to execute.
-                },
-                child: Text(
-                  'Awesome!',
-                  style: TextStyle(color: Colors.yellow),
-                ),
-              ),
             ).show(context);
           }
         },
