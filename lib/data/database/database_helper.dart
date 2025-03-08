@@ -20,7 +20,7 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'game.db');
     return await openDatabase(
       path,
-      version: 5,
+      version: 6,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -32,14 +32,8 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         level INTEGER,
         experience INTEGER,
+        gold INTEGER,
         date_battle TEXT
-      )
-    ''');
-    await db.execute('''
-      CREATE TABLE armor(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        defense INTEGER
       )
     ''');
     await db.execute('''
@@ -72,50 +66,9 @@ class DatabaseHelper {
     ''');
   }
 
-  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 2) {
-      await db.execute('''
-        CREATE TABLE armor(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT,
-          defense INTEGER
-        )
-      ''');
-      await db.execute('''
-        CREATE TABLE hero_armor(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          hero_id INTEGER,
-          armor_id INTEGER,
-          date_received TEXT
-        )
-      ''');
-    }
-    if (oldVersion < 3) {
-      await db.execute('''
-        CREATE TABLE hero_battle(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          hero_id INTEGER,
-          date_battle TEXT
-        )
-      ''');
-    }
-    if (oldVersion < 4) {
-      await db.execute('''
-        ALTER TABLE hero ADD COLUMN date_battle TEXT
-      ''');
-    }
-    if (oldVersion < 5) {
-      await db.execute('''
-        CREATE TABLE hero_status(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          hero_id INTEGER,
-          last_login TEXT,
-          health INTEGER
-        )
-      ''');
-    }
-  }
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {}
 
+  /// Hero methods
   Future<int> insertHero(HeroModel hero) async {
     Database db = await database;
     return await db.insert('hero', hero.toMap());
@@ -144,11 +97,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> insertArmor(ArmorModel armor) async {
-    Database db = await database;
-    return await db.insert('armor', armor.toMap());
-  }
-
+  /// Armor methods
   Future<int> insertHeroArmor(int heroId, ArmorModel armor) async {
     Database db = await database;
     final armorLength = (await db.query('hero_armor')).length;
@@ -244,5 +193,15 @@ class DatabaseHelper {
       }
     }
     return null;
+  }
+
+  Future<void> updateHeroHealth(int heroId, int health) async {
+    Database db = await database;
+    await db.update(
+      'hero_status',
+      {'health': health},
+      where: 'hero_id = ?',
+      whereArgs: [heroId],
+    );
   }
 }

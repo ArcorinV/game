@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GameBloc()..add(LoadHeroEvent(heroId: 1)),
+      create: (context) => GameBloc()..add(LoadHeroEvent(heroID: 1)),
       child: BlocConsumer<GameBloc, GameState>(
         listener: (context, state) {
           if (state is NewLevelState) {

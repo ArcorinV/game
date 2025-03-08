@@ -51,7 +51,7 @@ class BattlePage extends StatelessWidget {
               const Text('Битва'),
               ElevatedButton(
                 onPressed: () {
-                  context.read<GameBloc>().add(BattleEvent(heroId: hero.id));
+                  context.read<GameBloc>().add(BattleEvent(heroID: hero.id));
                 },
                 child: const Text('Отправиться в битву'),
               ),

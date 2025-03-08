@@ -11,7 +11,9 @@ class HeroModel {
   bool isAlive = true;
   int defense = 0;
 
-  HeroModel({this.id = 1, required this.level, required this.experience, this.armors});
+  int gold = 0;
+
+  HeroModel({this.id = 1, required this.level, required this.experience, this.armors, this.gold = 0});
 
   void addExperience(int exp) {
     experience += exp;
@@ -21,15 +23,15 @@ class HeroModel {
     }
   }
 
-  int experienceToNextLevel() {
-    return level * 100; // Пример формулы для расчета опыта до следующего уровня
-  }
+  // Пример формулы для расчета опыта до следующего уровня
+  int experienceToNextLevel() => level * 100;
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'level': level,
       'experience': experience,
+      'gold': gold,
     };
   }
 
@@ -38,6 +40,7 @@ class HeroModel {
       id: map['id'],
       level: map['level'],
       experience: map['experience'],
+      gold: map['gold'],
     );
   }
 

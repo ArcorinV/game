@@ -89,7 +89,7 @@ class ArmorModel {
 
   @override
   String toString() {
-    return 'Armor{name: $name, defense: $defense, rarity: $rarity, typeArmorWeight: $typeArmorWeight, typeArmor: $typeArmor}';
+    return _getName();
   }
 
   Color? getTextColor() => switch (rarity) {

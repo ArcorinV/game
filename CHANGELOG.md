@@ -18,7 +18,7 @@
 ### Fixed
 - Fixed a bug where the game would crash on startup.
 
-## [1.0.0] - 2023-10-01
+## [0.0.1] - 2023-10-01
 ### Added
 - Initial release of the game.
 - Basic gameplay mechanics and user interface.
